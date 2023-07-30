@@ -18,18 +18,26 @@ function Feed() {
         setMensagem('');
     }
 
+
     useEffect(() => {
-        socket.on('mensagemRecebida', (mensagemRecebida) => {
-            console.log('Mensagem recebida do servidor:', mensagemRecebida);
-            setMensagensFeed((mensagensAntigas) => [...mensagensAntigas, mensagemRecebida.mensagem]);
-        });
+          // Ouvir o evento 'mensagensAntigas' para receber as mensagens do servidor
+    socket.on('mensagensAntigas', (mensagensAntigas) => {
+        console.log('Mensagens antigas recebidas do servidor:', mensagensAntigas);
+        setMensagensFeed(mensagensAntigas);
+      });
+  
+      // Ouvir o evento 'mensagemRecebida' para receber as novas mensagens do servidor
+      socket.on('mensagemRecebida', (mensagemRecebida) => {
+        console.log('Mensagem recebida do servidor:', mensagemRecebida);
+        setMensagensFeed((mensagensAntigas) => [...mensagensAntigas, mensagemRecebida]);
+      });
     }, []);
 
     return (
         <div>
             <div>
                 {mensagensFeed.map((msg, index) => (
-                    <div key={index}>{msg}</div>
+                    <div key={index}>{msg.mensagem}</div>
                 ))}
             </div>
             <input type="text" value={mensagem} onChange={(e) => setMensagem(e.target.value)} />

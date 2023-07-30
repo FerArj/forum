@@ -6,12 +6,12 @@ import bodyParser from 'body-parser';
 import * as mysql from 'mysql2'; 
 import userRoutes from './routes/userRoutes.mjs';
 import messageRoutes from './routes/messageRoutes.mjs'
-import { enviarMensagem } from './controllers/messageController.mjs';
+import { enviarMensagem, enviarMensagensAntigas } from './controllers/messageController.mjs';
+import {configureSocketIO } from './socket.mjs';
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server); 
-
 
 // Configuração do CORS
 app.use(cors());
@@ -23,12 +23,16 @@ app.use(bodyParser.json());
 app.use('/users', userRoutes);
 app.use('/messages', messageRoutes);
 
+configureSocketIO(server.io);
+
 server.listen(3000, () => {
   console.log('Servidor WebSocket rodando na porta 3000');
 });
 
 io.on('connection', (socket) => {
   console.log('Novo cliente conectado');
+
+  enviarMensagensAntigas(socket);
 
   socket.on('enviarMensagem', async (message) => {
     console.log(`Mensagem recebida do cliente: ${message}`);

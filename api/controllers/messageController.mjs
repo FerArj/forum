@@ -1,21 +1,32 @@
-import { salvarMensagem } from '../models/messageModels.mjs';
+import { salvarMensagem, getMensagens } from '../models/messageModels.mjs';
 import { getIO } from '../socket.mjs';
 
-const enviarMensagem = async (req, res) => {
+const enviarMensagem = async (message) => {
   try {
-    const { mensagem } = req.body;
+    const {mensagem} = message;
 
     const resultado = await salvarMensagem(mensagem);
 
-    const io = getIO(); 
+    const io = getIO();
 
-    io.emit('mensagemRecebida', { mensagem }); 
+    io.emit('mensagemRecebida', { mensagem });
 
-    res.status(200).json({ message: 'Mensagem enviada e salva com sucesso!' });
+    return resultado; 
   } catch (error) {
     console.error('Erro ao enviar e salvar mensagem:', error);
-    res.status(500).json({ error: 'Erro ao enviar e salvar mensagem' });
+    throw error; 
   }
 };
 
-export { enviarMensagem };
+const enviarMensagensAntigas = async (socket) => {
+  try {
+    const mensagens = await getMensagens();
+    socket.emit('mensagensAntigas', mensagens);
+  } catch (error) {
+    console.error('Erro ao enviar mensagens antigas:', error);
+  }
+};
+
+
+
+export { enviarMensagem, enviarMensagensAntigas};
