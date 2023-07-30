@@ -1,0 +1,24 @@
+.containerCadastro{
+    display: flex;
+    margin: auto;
+    margin-top: 30vh;
+    justify-content: center;
+    height: 20vh;
+    width: 20vw;
+    flex-direction: column;
+}
+
+.containerCadastro label{
+    padding-top: 2vh;
+    margin: auto;
+}
+
+.containerCadastro p{
+    text-align: center;
+    padding-top: 2vh;
+}
+
+.containerCadastro span{
+    color: blueviolet;
+    cursor: pointer;
+}
