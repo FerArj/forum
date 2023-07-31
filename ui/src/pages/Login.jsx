@@ -13,7 +13,7 @@ function Login() {
 
     function handleLogin (){
 
-        axios.post("http://localhost:3000/users/autenticarUsuario", {
+        axios.post("http://192.168.0.195:3000/users/autenticarUsuario", {
             nome: usernameRef.current.value,
             senha: passwordRef.current.value
         }).then(res => {

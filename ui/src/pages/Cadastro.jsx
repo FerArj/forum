@@ -13,7 +13,7 @@ function Cadastro() {
     const navigate = useNavigate();
 
     function handleCadastrar() {
-        axios.post("http://localhost:3000/users/cadastrarUsuario", {
+        axios.post("http://192.168.0.195:3000/users/cadastrarUsuario", {
             email: userEmailRef.current.value,
             nome: usernameRef.current.value,
             senha: passwordRef.current.value
