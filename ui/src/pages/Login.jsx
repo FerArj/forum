@@ -19,6 +19,7 @@ function Login() {
         }).then(res => {
             if(res.status = 200){
                 console.log("logado");
+                sessionStorage.setItem('usuario', usernameRef.current.value);
                 navigate("./feed")
             }
         }).catch(err => {

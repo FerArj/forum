@@ -1,20 +1,19 @@
 import { salvarMensagem, getMensagens } from '../models/messageModels.mjs';
 import { getIO } from '../socket.mjs';
 
-const enviarMensagem = async (message) => {
+const enviarMensagem = async (req, res) => {
   try {
-    const {mensagem} = message;
+    const { usuario, mensagem } = req.body; 
 
-    const resultado = await salvarMensagem(mensagem);
+    await salvarMensagem(usuario, mensagem); 
 
     const io = getIO();
+    io.emit('mensagemRecebida', { usuario, mensagem });
 
-    io.emit('mensagemRecebida', { mensagem });
-
-    return resultado; 
+    res.status(200).send('Mensagem enviada e salva com sucesso!');
   } catch (error) {
     console.error('Erro ao enviar e salvar mensagem:', error);
-    throw error; 
+    res.status(500).send('Erro ao enviar e salvar mensagem');
   }
 };
 

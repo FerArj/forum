@@ -1,17 +1,17 @@
-import { executar } from '../app.mjs';
+import * as connection from '../database/config.mjs';
 
 function salvarMensagem(mensagem) {
   const instrucao = `
     INSERT INTO messages (mensagem) VALUES ('${mensagem}')
   `;
-  return executar(instrucao);
+  return connection.executar(instrucao);
 }
 
 function getMensagens() {
   const instrucao = `
     SELECT * FROM messages ;
   `;
-  return executar(instrucao);
+  return connection.executar(instrucao);
 }
 
 export { salvarMensagem, getMensagens};

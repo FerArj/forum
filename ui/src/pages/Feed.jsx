@@ -10,11 +10,13 @@ socket.on('connect', () => {
   });
 
 function Feed() {
+    const usuario = sessionStorage.getItem('usuario');
+    
     const [mensagem, setMensagem] = useState('');
     const [mensagensFeed, setMensagensFeed] = useState([]);
-
+    
     const enviarMensagem = () => {
-        socket.emit('enviarMensagem', {mensagem});
+        socket.emit('enviarMensagem', {mensagem}, {usuario});
         setMensagem('');
     }
 
@@ -37,11 +39,14 @@ function Feed() {
         <div>
             <div>
                 {mensagensFeed.map((msg, index) => (
-                    <div key={index}>{msg.mensagem}</div>
+                <div key={index}>
+                    <div>{msg.usuario}</div>
+                    <div>{msg.mensagem}</div>
+                </div>
                 ))}
             </div>
             <input type="text" value={mensagem} onChange={(e) => setMensagem(e.target.value)} />
-            <button onClick={enviarMensagem}>Enviar</button>
+            <button onClick={enviarMensagem}>Postar</button>
         </div>
     )
 }
